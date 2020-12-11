@@ -452,9 +452,9 @@ WifiMac::ConfigureDcf (Ptr<Txop> dcf, uint32_t cwmin, uint32_t cwmax, bool isDss
         }
       break;
     case AC_BE:
-      dcf->SetMinCw (cwmin);
-      dcf->SetMaxCw (cwmax);
-      dcf->SetAifsn (3);
+      dcf->SetMinCw (cwmin); // changed cwmin to 0
+      dcf->SetMaxCw (cwmax); // changed cwmax to 0
+      dcf->SetAifsn (3); // changed 3 to 0
       dcf->SetTxopLimit (MicroSeconds (0));
       break;
     case AC_BK:

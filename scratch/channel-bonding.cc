@@ -413,8 +413,8 @@ NodeContainer wifiStaNodes;
 //                           interBssDistance / 2};
  // double apPositionY[7] = {0, sqrt (3) / 2 * interBssDistance,  sqrt (3) / 2 * interBssDistance,
   //                         0, -sqrt (3) / 2 * interBssDistance, -sqrt (3) / 2 * interBssDistance};
- double apPositionX[7] = {0,interBssDistance,interBssDistance*2,interBssDistance*2,interBssDistance,-interBssDistance};
- double apPositionY[7] = {0,0,0,interBssDistance,interBssDistance,interBssDistance,interBssDistance};
+ double apPositionX[7] = {0,0.1,interBssDistance,-interBssDistance,interBssDistance,-interBssDistance};
+ double apPositionY[7] = {0,0,0,0,interBssDistance,interBssDistance,interBssDistance};
  for (uint8_t i = 0; i < nBss; i++)
     {
       positionAlloc->Add (Vector (apPositionX[i], apPositionY[i], 0.0));
@@ -747,8 +747,8 @@ InterferenceVal7=maxSecInterference7;
   unitDiscPositionAllocator1->AssignStreams (streamNumber);
   // AP1 is at origin (x=x1, y=y1), with radius Rho=r
   unitDiscPositionAllocator1->SetX (apPositionX[0]);
-  unitDiscPositionAllocator1->SetY (apPositionY[0]);
-  unitDiscPositionAllocator1->SetRho (distance);
+  unitDiscPositionAllocator1->SetY (8);
+  unitDiscPositionAllocator1->SetRho (0);
   for (uint32_t i = 0; i < n; i++)
     {
       Vector v = unitDiscPositionAllocator1->GetNext ();
@@ -763,8 +763,8 @@ InterferenceVal7=maxSecInterference7;
       unitDiscPositionAllocator2->AssignStreams (streamNumber + 1);
       // AP2 is at origin (x=x2, y=y2), with radius Rho=r
       unitDiscPositionAllocator2->SetX (apPositionX[1]);
-      unitDiscPositionAllocator2->SetY (apPositionY[1]);
-      unitDiscPositionAllocator2->SetRho (distance);
+      unitDiscPositionAllocator2->SetY (8);
+      unitDiscPositionAllocator2->SetRho (0);
       for (uint32_t i = 0; i < n; i++)
         {
           Vector v = unitDiscPositionAllocator2->GetNext ();
@@ -781,8 +781,8 @@ InterferenceVal7=maxSecInterference7;
       unitDiscPositionAllocator3->AssignStreams (streamNumber + 2);
       // AP3 is at origin (x=x3, y=y3), with radius Rho=r
       unitDiscPositionAllocator3->SetX (apPositionX[2]);
-      unitDiscPositionAllocator3->SetY (apPositionY[2]);
-      unitDiscPositionAllocator3->SetRho (distance);
+      unitDiscPositionAllocator3->SetY (8);
+      unitDiscPositionAllocator3->SetRho (0);
       for (uint32_t i = 0; i < n; i++)
         {
           Vector v = unitDiscPositionAllocator3->GetNext ();
@@ -799,8 +799,8 @@ InterferenceVal7=maxSecInterference7;
       unitDiscPositionAllocator4->AssignStreams (streamNumber + 3);
       // AP4 is at origin (x=x4, y=y4), with radius Rho=r
       unitDiscPositionAllocator4->SetX (apPositionX[3]);
-      unitDiscPositionAllocator4->SetY (apPositionY[3]);
-      unitDiscPositionAllocator4->SetRho (distance);
+      unitDiscPositionAllocator4->SetY (8);
+      unitDiscPositionAllocator4->SetRho (0);
       for (uint32_t i = 0; i < n; i++)
         {
           Vector v = unitDiscPositionAllocator4->GetNext ();
@@ -1990,14 +1990,16 @@ else
   Config::Connect ("/NodeList/*/ApplicationList/*/$ns3::UdpServer/RxWithAddresses",
                    MakeCallback (&PacketRx));
 
-  // phy.EnablePcap ("staA_pcap", staDeviceA);
- // phy.EnablePcap ("apA_pcap", apDeviceA);
-  /*
+  phy.EnablePcap ("staA_pcap", staDeviceA);
+  phy.EnablePcap ("apA_pcap", apDeviceA);
+ 
 phy.EnablePcap ("staB_pcap", staDeviceB);
 phy.EnablePcap ("apB_pcap", apDeviceB);
 phy.EnablePcap ("staC_pcap", staDeviceC);
 phy.EnablePcap ("apC_pcap", apDeviceC);
-*/
+phy.EnablePcap ("staD_pcap", staDeviceD);
+phy.EnablePcap ("apD_pcap", apDeviceD);
+
 
   Simulator::Stop (Seconds (simulationTime + 1));
   Simulator::Run ();
@@ -2023,7 +2025,7 @@ phy.EnablePcap ("apC_pcap", apDeviceC);
       double bitsReceived = bytesReceived[k] * 8;
       rxThroughputPerNode[k] = static_cast<double> (bitsReceived) / 1e6 / simulationTime;
       std::cout << "Node " << k << ", pkts " << packetsReceived[k] << ", bytes " << bytesReceived[k]
-                << ", throughput [MMb/s] " << rxThroughputPerNode[k] << std::endl;
+                << ", throughput [MMb/s] ," << rxThroughputPerNode[k] << std::endl;
           TputFile << rxThroughputPerNode[k] << std::endl;
 
     }
